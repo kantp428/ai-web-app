@@ -1,18 +1,23 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# โหลด tokenizer + model จาก Hugging Face Hub
-tokenizer = AutoTokenizer.from_pretrained("mrktp/text-mini-gpt2-finetuned")
-tokenizer.pad_token = tokenizer.eos_token
-
+# Global ตัวแปร (ยังไม่โหลด model)
+model = None
+tokenizer = None
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-model = AutoModelForCausalLM.from_pretrained("mrktp/text-mini-gpt2-finetuned")
-model.to(device)
-model.eval()
+MODEL_ID = "mrktp/text-mini-gpt2-finetuned"
+
+def load_model():
+    global model, tokenizer
+    if model is None:
+        tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
+        tokenizer.pad_token = tokenizer.eos_token
+        model = AutoModelForCausalLM.from_pretrained(MODEL_ID).to(device)
+        model.eval()
 
 def predict_with_model(text: str, top_k: int = 8):
-    # tokenize input
+    load_model()  # โหลดครั้งแรก
     inputs = tokenizer(text, return_tensors="pt").to(device)
 
     with torch.no_grad():
