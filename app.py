@@ -19,4 +19,7 @@ def predict():
     return jsonify(predictions)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get("PORT", 5000))  # Render จะส่ง PORT มา
+    app.run(host="0.0.0.0", port=port, debug=False)
+
