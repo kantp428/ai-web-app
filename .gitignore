@@ -8,3 +8,7 @@ venv/
 *.pt
 *.pth
 *.db
+# save model of hugging
+save_model.py
+model_test.py
+push_model.py
