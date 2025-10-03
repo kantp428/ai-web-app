@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Word Prediction Demo</title>
+
+    <!-- โหลด Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+
+    <!-- โหลด jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Word Prediction Demo</h1>
+
+      <div class="input-wrapper">
+        <textarea id="textInput" placeholder="Type here..." rows="4"></textarea>
+      </div>
+
+      <button class="clear-btn" onclick="clearText()">Clear</button>
+
+      <!-- ปุ่มทำนายจะอยู่ตรงนี้ -->
+      <div id="predictions"></div>
+    </div>
+
+    <script>
+      function getPredictions() {
+        const text = $("#textInput").val();
+        $.ajax({
+          url: "/predict",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({ text: text }),
+          success: function (data) {
+            $("#predictions").empty();
+            data.forEach((word) => {
+              const btn = $("<span class='word-btn'></span>").text(word);
+              btn.on("click", function () {
+                let currentText = $("#textInput").val();
+                $("#textInput").val(currentText + word + " ");
+                getPredictions();
+              });
+              $("#predictions").append(btn);
+            });
+          },
+        });
+      }
+
+      function clearText() {
+        $("#textInput").val("");
+        $("#predictions").empty();
+      }
+
+      $(document).ready(function () {
+        $("#textInput").on("keydown", function (e) {
+          if (e.key === "Enter" || e.keyCode === 13) {
+            e.preventDefault();
+            return false;
+          }
+
+          if (e.key === " " || e.code === "Space") {
+            let currentText = $(this).val();
+
+            if (currentText === "" || currentText.endsWith(" ")) {
+              e.preventDefault();
+              return false;
+            } else {
+              getPredictions();
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
