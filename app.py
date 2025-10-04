@@ -1,6 +1,6 @@
 import os
 from flask import Flask, request, jsonify, render_template
-from model_utils import predict_with_model, load_model
+from model_utils import predict_with_model
 
 app = Flask(__name__)
 
