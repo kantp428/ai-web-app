@@ -47,7 +47,11 @@
 
               btn.on("click", function () {
                 let currentText = $("#textInput").val();
-                $("#textInput").val(currentText + word + " ");
+                if (currentText.endsWith(" ")) {
+                  $("#textInput").val(currentText + word);
+                }else {
+                  $("#textInput").val(" " + currentText + word)
+                }
                 $("#textInput").focus();
 
                 // แสดง loading state
