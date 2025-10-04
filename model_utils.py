@@ -7,11 +7,7 @@ tokenizer = None
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 MODEL_ID = "mrktp/text-mini-gpt2-finetuned"
-
-def load_model():
-    """โหลด model/tokenizer ครั้งแรกแล้วเก็บไว้เป็น global"""
-    global model, tokenizer
-    if model is None or tokenizer is None:
+if model is None or tokenizer is None:
         tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
         # ป้องกัน error กรณี tokenizer ไม่มี pad token
         if tokenizer.pad_token is None:
@@ -20,6 +16,19 @@ def load_model():
         model = AutoModelForCausalLM.from_pretrained(MODEL_ID)
         model.to(device)
         model.eval()
+
+# def load_model():
+#     """โหลด model/tokenizer ครั้งแรกแล้วเก็บไว้เป็น global"""
+#     global model, tokenizer
+#     if model is None or tokenizer is None:
+#         tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
+#         # ป้องกัน error กรณี tokenizer ไม่มี pad token
+#         if tokenizer.pad_token is None:
+#             tokenizer.pad_token = tokenizer.eos_token
+
+#         model = AutoModelForCausalLM.from_pretrained(MODEL_ID)
+#         model.to(device)
+#         model.eval()
 
 def predict_with_model(text: str, top_k: int = 8):
     """รับ input text แล้วคืน top-k predicted next tokens"""
