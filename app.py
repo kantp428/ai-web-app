@@ -12,7 +12,7 @@ def index():
 def predict():
     data = request.get_json()
     text = data.get("text", "")
-    predictions = predict_with_model(text, top_k=8)
+    predictions = predict_with_model(text, top_k=10)
     return jsonify(predictions)
 
 if __name__ == "__main__":
