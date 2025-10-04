@@ -44,10 +44,11 @@
             $("#predictions").empty();
             data.forEach((word) => {
               const btn = $("<span class='word-btn'></span>").text(word);
-              
+
               btn.on("click", function () {
                 let currentText = $("#textInput").val();
                 $("#textInput").val(currentText + word + " ");
+                $("#textInput").focus();
 
                 // แสดง loading state
                 $("#predictions").html("<em>Loading...</em>");
