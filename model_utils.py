@@ -23,7 +23,7 @@ def load_model():
 
 def predict_with_model(text: str, top_k: int = 8):
     """รับ input text แล้วคืน top-k predicted next tokens"""
-    load_model()  # โหลดครั้งแรกเท่านั้น
+    # load_model()  # โหลดครั้งแรกเท่านั้น
 
     # tokenize input
     inputs = tokenizer(text, return_tensors="pt").to(device)

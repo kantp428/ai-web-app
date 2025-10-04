@@ -1,11 +1,12 @@
 import os
 from flask import Flask, request, jsonify, render_template
-from model_utils import predict_with_model
+from model_utils import predict_with_model, load_model
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
+    load_model()
     return render_template("index.html")
 
 @app.route("/predict", methods=["POST"])
