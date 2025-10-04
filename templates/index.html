@@ -44,11 +44,22 @@
             $("#predictions").empty();
             data.forEach((word) => {
               const btn = $("<span class='word-btn'></span>").text(word);
+              // btn.on("click", function () {
+              //   let currentText = $("#textInput").val();
+              //   $("#textInput").val(currentText + word + " ");
+              //   getPredictions();
+              // });
               btn.on("click", function () {
                 let currentText = $("#textInput").val();
                 $("#textInput").val(currentText + word + " ");
-                getPredictions();
+
+                // แสดง loading state
+                $("#predictions").html("<em>Loading...</em>");
+
+                // เรียก prediction async
+                setTimeout(getPredictions, 10);
               });
+
               $("#predictions").append(btn);
             });
           },
